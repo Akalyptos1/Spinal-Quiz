@@ -1,4 +1,4 @@
-/* Base reset */
+/* Reset + Base */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -7,15 +7,15 @@ body {
   text-align: center;
 }
 
-/* CONTAINERS */
+/* Quiz container wrapper */
 .quiz-container {
-  position: relative;
   max-width: 600px;
-  margin: 60px auto;
+  margin: 80px auto;
+  position: relative;
   padding: 0;
 }
 
-/* IMAGE CROPPER */
+/* Spine cropper */
 .image-cropper {
   position: absolute;
   top: -20%;
@@ -34,11 +34,11 @@ body {
   height: auto;
 }
 
-/* CARD */
+/* White card */
 .card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   padding: 40px 20px;
   margin-left: 20%;
 }
@@ -47,7 +47,7 @@ body {
   margin-bottom: 24px;
 }
 
-/* TIMER OPTION */
+/* Big purple checkbox + label */
 .timer-option {
   display: flex;
   align-items: center;
@@ -61,7 +61,7 @@ body {
   accent-color: #8b5cf6; /* purple */
 }
 
-/* START BUTTON */
+/* Start button */
 #start-btn {
   font-size: 1rem;
   padding: 12px 28px;
@@ -76,9 +76,16 @@ body {
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
-/* QUIZ SCREEN STYLES */
-#quiz-container .quiz-container,
-#summary-container .quiz-container { margin: 0; }
+/* Quiz & summary reuse same container style */
+#quiz-container, #summary-container {
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+/* Question image + highlight */
 .image-wrapper {
   position: relative;
   margin: 0 auto 20px;
@@ -92,15 +99,17 @@ body {
 }
 #highlight-box {
   position: absolute;
-  border: 2px solid #FFD700;
-  background: rgba(255, 215, 0, 0.25);
+  border: 2px solid #ffd700;
+  background: rgba(255,215,0,0.25);
   display: none;
 }
-ul { list-style: none; padding: 0 20px; }
+
+/* Options list */
+ul { list-style: none; padding: 0; }
 li {
   background: #007bff;
   color: white;
-  margin: 8px 0;
+  margin: 8px 20px;
   padding: 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -110,7 +119,7 @@ li:hover { background: #0056b3; }
 .correct { background: #28a745 !important; }
 .incorrect { background: #dc3545 !important; }
 
-/* PROGRESS BAR */
+/* Progress bar */
 #progress-container {
   background: #e0e0e0;
   border-radius: 4px;
@@ -120,23 +129,18 @@ li:hover { background: #0056b3; }
 }
 #progress {
   background: #007bff;
-  height: 100%;
   width: 0;
+  height: 100%;
   transition: width 0.3s;
 }
 
-/* QUESTION TIMER */
+/* Timer below question */
 .timer-container {
   margin-top: 12px;
   font-size: 1rem;
 }
 #timer-display { font-weight: bold; }
 
-/* SUMMARY */
-#summary-container .quiz-container {
-  padding: 40px 20px;
-}
+/* Summary list */
 #summary-list { text-align: left; padding-left: 20px; }
-#summary-list li {
-  margin-bottom: 12px;
-}
+#summary-list li { margin-bottom: 12px; }
