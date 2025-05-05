@@ -1,128 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ─── Globals ─────────────────────────────────
+  // ─── Quiz Data ───────────────────────────────────
   const quizData = [
     {
       question: "Identify the indicated structure:",
       image: "https://i.imgur.com/b3c191f9-2b05-4e3d-bd5a-8a477c97bf2b.png",
       options: ["Ala","Sacral hiatus","Posterior sacral foramina","Superior articular process"],
       answer: "Ala",
-      // highlight co-ordinates as a fraction of image size:
-      highlight: { x: 0.6, y: 0.0, width: 0.35, height: 0.45 }
+      highlight: { x:0.48, y:0.0, w:0.32, h:0.48 }
     },
-    // … add highlight for each question similarly …
+    // … repeat for your other 14 questions …
   ];
 
-  let currentQuestionIndex = 0, score = 0, userAnswers = [];
-  let questionTimer, bonusTimer, bonusTime = 30;
-  const questionDuration = 30;
+  let idx=0, score=0, answers=[];
+  let timerInt;
 
-  // ─── Dom Refs ──────────────────────────────────
-  const startScreen    = document.getElementById('start-screen');
-  const bonusToggle    = document.getElementById('bonus-toggle');
-  const bonusTimerDisp = document.getElementById('bonus-timer');
-  const startBtn       = document.getElementById('start-btn');
+  // ─── DOM Refs ────────────────────────────────────
+  const startScreen  = document.getElementById('start-screen');
+  const startBtn     = document.getElementById('start-btn');
+  const quizCont     = document.getElementById('quiz-container');
+  const qElem        = document.getElementById('question');
+  const imgElem      = document.getElementById('question-image');
+  const optList      = document.getElementById('options-list');
+  const progBar      = document.getElementById('progress');
+  const tmrDisplay   = document.getElementById('timer-display');
+  const highlightBox = document.getElementById('highlight-box');
+  const summaryCont  = document.getElementById('summary-container');
+  const finalScore   = document.getElementById('final-score');
+  const summaryList  = document.getElementById('summary-list');
 
-  const quizContainer   = document.getElementById('quiz-container');
-  const questionEl      = document.getElementById('question');
-  const questionImg     = document.getElementById('question-image');
-  const optionsList     = document.getElementById('options-list');
-  const progressBar     = document.getElementById('progress');
-  const timerDisplay    = document.getElementById('timer-display');
-  const highlightBox    = document.getElementById('highlight-box');
-
-  const summaryCont   = document.getElementById('summary-container');
-  const finalScoreEl  = document.getElementById('final-score');
-  const summaryList   = document.getElementById('summary-list');
-
-  // ─── Start Quiz ───────────────────────────────
-  startBtn.addEventListener('click', () => {
+  // ─── Start ────────────────────────────────────────
+  startBtn.onclick = () => {
     startScreen.style.display = 'none';
-    quizContainer.style.display = 'block';
-    loadQuestion();
-  });
+    quizCont.style.display    = 'block';
+    loadQ();
+  };
 
-  // ─── Load / Highlight / Timer ─────────────────
-  function loadQuestion() {
-    if (currentQuestionIndex >= quizData.length) return showSummary();
+  // ─── Load Question ─────────────────────────────────
+  function loadQ() {
+    if (idx >= quizData.length) return showSummary();
 
-    const q = quizData[currentQuestionIndex];
-    questionEl.textContent = q.question;
-    questionImg.src = q.image;
+    const q = quizData[idx];
+    qElem.textContent = q.question;
+    imgElem.src       = q.image;
 
-    // show highlight
-    if (q.highlight) {
-      highlightBox.style.display = 'block';
-      highlightBox.style.left   = (q.highlight.x * 100) + '%';
-      highlightBox.style.top    = (q.highlight.y * 100) + '%';
-      highlightBox.style.width  = (q.highlight.width * 100) + '%';
-      highlightBox.style.height = (q.highlight.height * 100) + '%';
-    }
+    // place highlight
+    const box = highlightBox;
+    box.style.display = 'block';
+    box.style.left    = (q.highlight.x * 100)+'%';
+    box.style.top     = (q.highlight.y * 100)+'%';
+    box.style.width   = (q.highlight.w * 100)+'%';
+    box.style.height  = (q.highlight.h * 100)+'%';
 
     // options
-    optionsList.innerHTML = '';
-    q.options.forEach(opt => {
+    optList.innerHTML = '';
+    q.options.forEach(o => {
       const li = document.createElement('li');
-      li.textContent = opt;
-      li.addEventListener('click', () => selectOption(opt));
-      optionsList.appendChild(li);
+      li.textContent = o;
+      li.onclick = () => select(o);
+      optList.appendChild(li);
     });
 
-    // progress
-    progressBar.style.width = `${(currentQuestionIndex/quizData.length)*100}%`;
+    // progress bar
+    progBar.style.width = ((idx/quizData.length)*100)+'%';
 
-    // start 30 s timer
-    clearInterval(questionTimer);
-    let t = questionDuration;
-    timerDisplay.textContent = formatTime(t);
-    questionTimer = setInterval(() => {
+    // timer
+    clearInterval(timerInt);
+    let t=30;
+    tmrDisplay.textContent = format(t);
+    timerInt = setInterval(()=> {
       t--;
-      timerDisplay.textContent = formatTime(t);
-      if (t<=0) {
-        clearInterval(questionTimer);
-        recordAnswer(null,false);
-        nextQuestion();
-      }
-    }, 1000);
+      tmrDisplay.textContent = format(t);
+      if (t<=0) { clearInterval(timerInt); select(null); }
+    },1000);
   }
 
-  function selectOption(choice) {
-    clearInterval(questionTimer);
-    const q = quizData[currentQuestionIndex];
-    const correct = choice === q.answer;
+  function select(choice) {
+    clearInterval(timerInt);
+    const correct = choice === quizData[idx].answer;
     if (correct) score++;
-    userAnswers.push({ index: currentQuestionIndex, selected: choice, correct });
-    // immediate feedback
-    Array.from(optionsList.children).forEach(li => {
-      if (li.textContent === choice) {
+    answers.push({idx,choice,correct});
+
+    // highlight feedback
+    [...optList.children].forEach(li=>{
+      if (li.textContent===choice) {
         li.classList.add(correct?'correct':'incorrect');
       }
     });
-    setTimeout(nextQuestion, 800);
+
+    setTimeout(()=>{
+      idx++;
+      loadQ();
+    },600);
   }
 
-  function nextQuestion() {
-    currentQuestionIndex++;
-    loadQuestion();
-  }
-
-  // ─── Summary ──────────────────────────────────
+  // ─── Summary ──────────────────────────────────────
   function showSummary() {
-    clearInterval(questionTimer);
-    quizContainer.style.display   = 'none';
-    summaryCont.style.display     = 'block';
-    finalScoreEl.textContent      = `You scored ${score}/${quizData.length}`;
-    summaryList.innerHTML         = '';
-    userAnswers.forEach(ans => {
-      const q = quizData[ans.index];
-      const li = document.createElement('li');
-      li.textContent = `Q${ans.index+1}: ${q.question} — Your answer: ${ans.selected||'None'} (${ans.correct?'✔️':'❌'})`;
+    quizCont.style.display    = 'none';
+    summaryCont.style.display = 'block';
+    finalScore.textContent    = `You scored ${score}/${quizData.length}`;
+    summaryList.innerHTML     = '';
+    answers.forEach(a=>{
+      const q=quizData[a.idx];
+      const li=document.createElement('li');
+      li.textContent = `Q${a.idx+1}: ${q.question} — Your answer: ${a.choice||'None'} (${a.correct?'✔️':'❌'})`;
       summaryList.appendChild(li);
     });
   }
 
-  function formatTime(sec) {
-    const m = String(Math.floor(sec/60)).padStart(2,'0');
-    const s = String(sec%60).padStart(2,'0');
-    return `${m}:${s}`;
+  function format(s) {
+    const mm = String(Math.floor(s/60)).padStart(2,'0');
+    const ss = String(s%60).padStart(2,'0');
+    return mm+':'+ss;
   }
 });
