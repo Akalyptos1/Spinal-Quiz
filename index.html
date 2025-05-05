@@ -2,44 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Spinal Anatomy Quiz</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <!-- START SCREEN -->
   <div id="start-screen" class="quiz-container">
-    <h2>Welcome to the Spinal Anatomy Quiz</h2>
-    <div class="timer-option">
-      <label>
-        <input type="checkbox" id="bonus-toggle">
-        Beat the clock (30 s per question) and grab double points!
-      </label>
-      <!-- you can show a running countdown here if you like -->
-      <div id="bonus-timer" style="display:none;">00:30</div>
+    <div class="image-cropper">
+      <img src="https://i.imgur.com/SHPhuF1.png" alt="Spine" />
     </div>
-    <button id="start-btn">Start Quiz</button>
+    <div class="card">
+      <h1>Welcome to the Spinal Anatomy Quiz</h1>
+      <div class="timer-option">
+        <input type="checkbox" id="bonus-toggle">
+        <label for="bonus-toggle">
+          Beat the clock (30 s per question) and grab double points!
+        </label>
+      </div>
+      <button id="start-btn">Start Quiz</button>
+    </div>
   </div>
 
   <!-- QUIZ SCREEN -->
   <div id="quiz-container" class="quiz-container" style="display:none;">
     <h2 id="question">Loading question…</h2>
     <div class="image-wrapper">
-      <img id="question-image" src="" alt="Anatomy Illustration">
+      <img id="question-image" src="" alt="Anatomy Image">
       <div id="highlight-box"></div>
     </div>
     <ul id="options-list"></ul>
-
-    <div id="progress-container">
-      <div id="progress"></div>
-    </div>
-
+    <div id="progress-container"><div id="progress"></div></div>
     <div class="timer-container">
       Question Timer: <span id="timer-display">00:30</span>
     </div>
   </div>
 
-  <!-- SUMMARY SCREEN -->
+  <!-- SUMMARY -->
   <div id="summary-container" class="quiz-container" style="display:none;">
     <h3>Your Results</h3>
     <p id="final-score"></p>
