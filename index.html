@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Spinal Anatomy Quiz</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -10,17 +10,22 @@
 
   <!-- START SCREEN -->
   <div id="start-screen" class="quiz-container">
+    <!-- Cropped spine on the left -->
     <div class="image-cropper">
-      <img src="https://i.imgur.com/SHPhuF1.png" alt="Spine" />
+      <img src="https://i.imgur.com/SHPhuF1.png" alt="Spine">
     </div>
+
+    <!-- Welcome card -->
     <div class="card">
       <h1>Welcome to the Spinal Anatomy Quiz</h1>
+
       <div class="timer-option">
         <input type="checkbox" id="bonus-toggle">
         <label for="bonus-toggle">
           Beat the clock (30 s per question) and grab double points!
         </label>
       </div>
+
       <button id="start-btn">Start Quiz</button>
     </div>
   </div>
