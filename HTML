@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Spinal Anatomy Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- START SCREEN -->
+  <div id="start-screen" class="quiz-container">
+    <h2>Welcome to the Spinal Anatomy Quiz</h2>
+    <div class="timer-option">
+      <label>
+        <input type="checkbox" id="bonus-toggle">
+        Beat the clock (30 s per question) and grab double points!
+      </label>
+      <!-- you can show a running countdown here if you like -->
+      <div id="bonus-timer" style="display:none;">00:30</div>
+    </div>
+    <button id="start-btn">Start Quiz</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-container" class="quiz-container" style="display:none;">
+    <h2 id="question">Loading question…</h2>
+    <div class="image-wrapper">
+      <img id="question-image" src="" alt="Anatomy Illustration">
+      <div id="highlight-box"></div>
+    </div>
+    <ul id="options-list"></ul>
+
+    <div id="progress-container">
+      <div id="progress"></div>
+    </div>
+
+    <div class="timer-container">
+      Question Timer: <span id="timer-display">00:30</span>
+    </div>
+  </div>
+
+  <!-- SUMMARY SCREEN -->
+  <div id="summary-container" class="quiz-container" style="display:none;">
+    <h3>Your Results</h3>
+    <p id="final-score"></p>
+    <ul id="summary-list"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
